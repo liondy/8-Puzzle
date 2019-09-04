@@ -8,7 +8,7 @@
  *
  * @author michael
  */
-public class State {
+public class State implements Comparable<State> {
     State parent;
     int[][] board;
     int[][] goalState = {{1,2,3},{4,5,6},{7,8,0}};
@@ -147,5 +147,10 @@ public class State {
             }
         }
         return same;
+    }
+    
+    @Override
+    public int compareTo(State s){
+        return Integer.compare(this.point, s.point);
     }
 }
