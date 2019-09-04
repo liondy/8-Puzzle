@@ -60,7 +60,7 @@ public class State {
                     continue;
                 }
             }
-            else if(!d){
+            if(!d){
                 d=true;
                 s = state.moveDown(this);
                 if(s!=null){
@@ -69,7 +69,7 @@ public class State {
                     continue;
                 }
             }
-            else if(!l){
+            if(!l){
                 l=true;
                 s = state.moveLeft(this);
                 if(s!=null){
@@ -78,7 +78,7 @@ public class State {
                     continue;
                 }
             }
-            else if(!r){
+            if(!r){
                 r=true;
                 s = state.moveRight(this);
                 if(s!=null){
