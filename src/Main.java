@@ -8,6 +8,7 @@
  *
  * @author michael
  */
+import java.util.PriorityQueue;
 import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
@@ -19,6 +20,13 @@ public class Main {
             }
         }
         State s = new State(board);
-        System.out.println(s.isGoal());
+        if(s.isGoal()){
+            System.out.println("Puzzle Solved");
+        }
+        else{
+            PriorityQueue<State> pq = new PriorityQueue<>();
+            s.setParent(null); //the root of the tree
+            pq.add(s);
+        }
     }
 }

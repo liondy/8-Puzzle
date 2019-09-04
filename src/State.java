@@ -37,22 +37,11 @@ public class State {
     
     //make frontier based on the empty tile location (x,y)
     public State[] makeFrontier(State state){
-        int i,j,k,x=0,y=0;
-        for(i=0;i<3;i++){
-            for(j=0;j<3;j++){
-                if(state.board[i][j]==0){
-                    x=i;
-                    y=j;
-                }
-            }
-        }
+        int i,x=state.x,y=state.y;
+        boolean u=false,d=false,l=false,r=false;
         State[] arrayFrontier;
-        int[][] newBoard = new int[3][3];
         if((x==0&&(y==0||y==2))||(x==2&&(y==0||y==2))){
             arrayFrontier = new State[2];
-            if(x==0&&y==0){
-                
-            }
         }
         else if(((x==0||x==2)&&y==1)||(x==1&&(y==0||y==2))){
             arrayFrontier = new State[3];
@@ -61,9 +50,41 @@ public class State {
             arrayFrontier = new State[4];
         }
         for (i = 0; i < arrayFrontier.length; i++) {
-            for(j=0;j<3;j++){
-                for(k=0;k<3;k++){
-                    
+            State s;
+            if(!u){
+                u=true;
+                s = state.moveUp(this);
+                if(s!=null){
+                    arrayFrontier[i]=s;
+                    s.setParent(state);
+                    continue;
+                }
+            }
+            else if(!d){
+                d=true;
+                s = state.moveDown(this);
+                if(s!=null){
+                    arrayFrontier[i]=s;
+                    s.setParent(state);
+                    continue;
+                }
+            }
+            else if(!l){
+                l=true;
+                s = state.moveLeft(this);
+                if(s!=null){
+                    arrayFrontier[i]=s;
+                    s.setParent(state);
+                    continue;
+                }
+            }
+            else if(!r){
+                r=true;
+                s = state.moveRight(this);
+                if(s!=null){
+                    arrayFrontier[i]=s;
+                    s.setParent(state);
+                    continue;
                 }
             }
         }
