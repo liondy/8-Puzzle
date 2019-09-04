@@ -11,11 +11,18 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 public class Main {
-    int[][] board;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String line = br.readLine();
-//        board[0]=line.toCharArray();
+    static int[][] board;
+    static char[] temp;
+    static int i,j;
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        board = new int[3][3];
+        for (i = 0; i < 3; i++) {
+            for (j = 0; j < 3; j++) {
+                board[i][j] = sc.nextInt();
+            }
+        }
     }
 }
