@@ -26,7 +26,11 @@ public class Main {
         else{
             PriorityQueue<State> pq = new PriorityQueue<>();
             s.setParent(null); //the root of the tree
-            pq.add(s);
+            //pq.add(s);
+			State[] arrofState = s.makeFrontier(this);
+			for(int i=0;i<arrofState.length;i++){
+				pq.add(arrofState[i]);
+			}
         }
     }
 }
