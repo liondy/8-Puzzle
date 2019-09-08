@@ -20,17 +20,15 @@ public class Main {
             }
         }
         State s = new State(board);
-        if(s.isGoal()){
-            System.out.println("Puzzle Solved");
-        }
-        else{
-            PriorityQueue<State> pq = new PriorityQueue<>();
-            s.setParent(null); //the root of the tree
-            //pq.add(s);
-			State[] arrofState = s.makeFrontier(this);
-			for(int i=0;i<arrofState.length;i++){
-				pq.add(arrofState[i]);
-			}
+        s.compute(s, null);
+        while(!s.frontier.isEmpty()){
+            State curr = s.frontier.remove();
+            s.moveUp(curr);
+            s.printState(curr);
+//            s.moveDown(curr);
+//            s.printState(s);
+//            s.moveLeft(curr);
+//            s.moveRight(curr);
         }
     }
 }

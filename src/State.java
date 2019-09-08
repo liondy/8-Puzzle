@@ -8,8 +8,14 @@
  *
  * @author michael
  */
+import java.util.Queue;
+import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.Map;
 public class State implements Comparable<State> {
-    State parent;
+    Queue<State> frontier = new LinkedList<State>();
+    Map<State,Integer> explored = new HashMap<State,Integer>();
+    Map<State,State> memo = new HashMap<State,State>();
     int[][] board;
     int[][] goalState = {{1,2,3},{4,5,6},{7,8,0}};
     int point,x,y;
@@ -20,9 +26,6 @@ public class State implements Comparable<State> {
         int i,j;
         for (i=0;i<3;i++) {
             for(j=0;j<3;j++){
-                if(this.board[i][j]==this.goalState[i][j]){
-                    this.point++;
-                }
                 if(this.board[i][j]==0){
                     this.x=i;
                     this.y=j;
@@ -31,122 +34,101 @@ public class State implements Comparable<State> {
         }
     }
     
-    public void setParent(State s){
-        this.parent = s;
+    public void compute(State newState, State oldState){
+        if(!explored.containsKey(newState)){
+            int val;
+            if(oldState==null){
+                val = 0;
+            }
+            else{
+                val = explored.get(oldState)+1;
+            }
+            explored.put(newState,val);
+            frontier.add(newState);
+            memo.put(newState, oldState);
+        }
     }
     
-    //make frontier based on the empty tile location (x,y)
-    public State[] makeFrontier(State state){
-        int i,x=state.x,y=state.y;
-        boolean u=false,d=false,l=false,r=false;
-        State[] arrayFrontier;
-        if((x==0&&(y==0||y==2))||(x==2&&(y==0||y==2))){
-            arrayFrontier = new State[2];
-        }
-        else if(((x==0||x==2)&&y==1)||(x==1&&(y==0||y==2))){
-            arrayFrontier = new State[3];
-        }
-        else{
-            arrayFrontier = new State[4];
-        }
-        for (i = 0; i < arrayFrontier.length; i++) {
-            State s;
-            if(!u){
-                u=true;
-                s = state.moveUp(this);
-                if(s!=null){
-                    arrayFrontier[i]=s;
-                    s.setParent(state);
-                    continue;
-                }
-            }
-            if(!d){
-                d=true;
-                s = state.moveDown(this);
-                if(s!=null){
-                    arrayFrontier[i]=s;
-                    s.setParent(state);
-                    continue;
-                }
-            }
-            if(!l){
-                l=true;
-                s = state.moveLeft(this);
-                if(s!=null){
-                    arrayFrontier[i]=s;
-                    s.setParent(state);
-                    continue;
-                }
-            }
-            if(!r){
-                r=true;
-                s = state.moveRight(this);
-                if(s!=null){
-                    arrayFrontier[i]=s;
-                    s.setParent(state);
-                    continue;
-                }
-            }
-        }
-        return arrayFrontier;
-    }
-    
-    public State moveUp(State state){
+    public void moveUp(State state){
         if(state.x>0){
             State newState = new State(state.board);
             int temp = newState.board[x-1][y];
             newState.board[x-1][y]=0;
             newState.board[x][y]=temp;
-            return newState;
+            newState.x = x-1;
+            newState.y = y;
+            isGoal(state,newState);
         }
-        return null;
     }
     
-    public State moveDown(State state){
+    public void moveDown(State state){
         if(state.x<2){
             State newState = new State(state.board);
             int temp = newState.board[x+1][y];
             newState.board[x+1][y]=0;
             newState.board[x][y]=temp;
-            return newState;
+            newState.x = x+1;
+            newState.y = y;
+            isGoal(state,newState);
         }
-        return null;
     }
     
-    public State moveLeft(State state){
+    public void moveLeft(State state){
         if(state.y>0){
             State newState = new State(state.board);
             int temp = newState.board[x][y-1];
             newState.board[x][y-1]=0;
             newState.board[x][y]=temp;
-            return newState;
+            newState.x = x;
+            newState.y = y-1;
+            isGoal(state,newState);
         }
-        return null;
     }
     
-    public State moveRight(State state){
+    public void moveRight(State state){
         if(state.y<2){
             State newState = new State(state.board);
             int temp = newState.board[x][y+1];
             newState.board[x][y+1]=0;
             newState.board[x][y]=temp;
-            return newState;
+            newState.x = x;
+            newState.y = y;
+            isGoal(state,newState);
         }
-        return null;
     }
     
     //check if the state is the goal state
-    public boolean isGoal(){
+    public void isGoal(State oldState, State newState){
+        compute(newState,oldState);
         int i,j;
         boolean same=true;
         for (i = 0; i < 3; i++) {
             for (j = 0; j < 3; j++) {
-                if(this.board[i][j]!=this.goalState[i][j]){
+                if(newState.board[i][j]!=this.goalState[i][j]){
                     same=false;
                 }
             }
         }
-        return same;
+        if(same){
+            System.out.println("Solution found after "+explored.get(newState)+" steps");
+            State trace = newState;
+            while(trace!=null){
+                printState(trace);
+                trace = memo.get(trace);
+            }
+            System.exit(0);
+        }
+    }
+    
+    public void printState(State s){
+        int i,j;
+        for (i = 0; i < 3; i++) {
+            for (j = 0; j < 3; j++) {
+                System.out.print(s.board[i][j]+" ");
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
     
     @Override
