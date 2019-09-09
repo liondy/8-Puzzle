@@ -16,12 +16,14 @@ import java.io.InputStreamReader;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        System.out.println("Input your board:");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String initialState = "";
         for (int i = 0; i < 3; i++) {
             initialState += br.readLine();
         }
         initialState = initialState.replace(" ", "");
+        System.out.println("Searching for solution...");
         State s = new State();
         s.compute(initialState,null);
         while(!s.frontier.isEmpty()){
