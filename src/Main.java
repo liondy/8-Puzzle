@@ -1,3 +1,8 @@
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,27 +13,23 @@
  *
  * @author michael
  */
-import java.util.PriorityQueue;
-import java.util.Scanner;
+
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int[][] board = new int[3][3];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String initialState = "";
         for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                board[i][j] = sc.nextInt();
-            }
+            initialState += br.readLine();
         }
-        State s = new State(board);
-        s.compute(s, null);
+        initialState = initialState.replace(" ", "");
+        State s = new State();
+        s.compute(initialState,null);
         while(!s.frontier.isEmpty()){
-            State curr = s.frontier.remove();
+            String curr = s.frontier.remove();
             s.moveUp(curr);
-            s.printState(curr);
-//            s.moveDown(curr);
-//            s.printState(s);
-//            s.moveLeft(curr);
-//            s.moveRight(curr);
+            s.moveDown(curr);
+            s.moveLeft(curr);
+            s.moveRight(curr);
         }
     }
 }

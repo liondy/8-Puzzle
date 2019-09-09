@@ -12,29 +12,14 @@ import java.util.Queue;
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.Map;
-public class State implements Comparable<State> {
-    Queue<State> frontier = new LinkedList<State>();
-    Map<State,Integer> explored = new HashMap<State,Integer>();
-    Map<State,State> memo = new HashMap<State,State>();
-    int[][] board;
-    int[][] goalState = {{1,2,3},{4,5,6},{7,8,0}};
-    int point,x,y;
+import java.util.Stack;
+public class State{
+    Queue<String> frontier = new LinkedList<String>();
+    Map<String,Integer> explored = new HashMap<String,Integer>();
+    Map<String,String> memo = new HashMap<String,String>();
+    Stack<String> result = new Stack();
     
-    //initial state
-    public State(int[][] board){
-        this.board = board;
-        int i,j;
-        for (i=0;i<3;i++) {
-            for(j=0;j<3;j++){
-                if(this.board[i][j]==0){
-                    this.x=i;
-                    this.y=j;
-                }
-            }
-        }
-    }
-    
-    public void compute(State newState, State oldState){
+    public void compute(String newState, String oldState){
         if(!explored.containsKey(newState)){
             int val;
             if(oldState==null){
@@ -49,90 +34,80 @@ public class State implements Comparable<State> {
         }
     }
     
-    public void moveUp(State state){
-        if(state.x>0){
-            State newState = new State(state.board);
-            int temp = newState.board[x-1][y];
-            newState.board[x-1][y]=0;
-            newState.board[x][y]=temp;
-            newState.x = x-1;
-            newState.y = y;
-            isGoal(state,newState);
+    public void moveUp(String state){
+        int a = state.indexOf("0");
+        if(a>2){
+            String nextState = state.substring(0,a-3)+"0"+state.substring(a-2,a)+state.charAt(a-3)+state.substring(a+1);
+            isGoal(state,nextState);
         }
     }
     
-    public void moveDown(State state){
-        if(state.x<2){
-            State newState = new State(state.board);
-            int temp = newState.board[x+1][y];
-            newState.board[x+1][y]=0;
-            newState.board[x][y]=temp;
-            newState.x = x+1;
-            newState.y = y;
-            isGoal(state,newState);
+    public void moveDown(String state){
+        int a = state.indexOf("0");
+        if(a<6){
+            String nextState = state.substring(0,a)+state.substring(a+3,a+4)+state.substring(a+1,a+3)+"0"+state.substring(a+4);
+            isGoal(state, nextState);
         }
     }
     
-    public void moveLeft(State state){
-        if(state.y>0){
-            State newState = new State(state.board);
-            int temp = newState.board[x][y-1];
-            newState.board[x][y-1]=0;
-            newState.board[x][y]=temp;
-            newState.x = x;
-            newState.y = y-1;
-            isGoal(state,newState);
+    public void moveLeft(String state){
+        int a = state.indexOf("0");
+        if(a!=0 && a!=3 && a!=6){
+            String nextState = state.substring(0,a-1)+"0"+state.charAt(a-1)+state.substring(a+1);
+            isGoal(state, nextState);
         }
     }
     
-    public void moveRight(State state){
-        if(state.y<2){
-            State newState = new State(state.board);
-            int temp = newState.board[x][y+1];
-            newState.board[x][y+1]=0;
-            newState.board[x][y]=temp;
-            newState.x = x;
-            newState.y = y;
-            isGoal(state,newState);
+    public void moveRight(String state){
+        int a = state.indexOf("0");
+        if(a!=2 && a!=5 && a!=8){
+            String nextState = state.substring(0,a)+state.charAt(a+1)+"0"+state.substring(a+2);
+            isGoal(state, nextState);
         }
     }
     
     //check if the state is the goal state
-    public void isGoal(State oldState, State newState){
+    private void isGoal(String oldState, String newState){
         compute(newState,oldState);
-        int i,j;
-        boolean same=true;
-        for (i = 0; i < 3; i++) {
-            for (j = 0; j < 3; j++) {
-                if(newState.board[i][j]!=this.goalState[i][j]){
-                    same=false;
-                }
-            }
-        }
-        if(same){
-            System.out.println("Solution found after "+explored.get(newState)+" steps");
-            State trace = newState;
+        if(newState.equals("123456780")){
+            int total = explored.get(newState);
+            System.out.println("Solution found after "+total+" steps");
+            String trace = newState;
             while(trace!=null){
-                printState(trace);
+                result.add(trace);
                 trace = memo.get(trace);
             }
+            backtrack(total);
             System.exit(0);
         }
     }
     
-    public void printState(State s){
-        int i,j;
-        for (i = 0; i < 3; i++) {
-            for (j = 0; j < 3; j++) {
-                System.out.print(s.board[i][j]+" ");
+    private void backtrack(int steps){
+        int i=0;
+        while(!result.isEmpty()){
+            System.out.print("Step: "+i);
+            if(i==0){
+                System.out.println(" (Initial State)");
             }
-            System.out.println();
+            else if(i==steps){
+                System.out.println(" (Goal State)");
+            }
+            else{
+                System.out.println();
+            }
+            printState(result.pop());
+            i++;
         }
-        System.out.println();
     }
     
-    @Override
-    public int compareTo(State s){
-        return Integer.compare(this.point, s.point);
+    private void printState(String s){
+        int i=0;
+        while(i!=s.length()){
+            if(i==3||i==6)System.out.println();
+            System.out.print(s.charAt(i)+" ");
+            i++;
+        }
+        System.out.println();
+        System.out.println();
     }
 }
