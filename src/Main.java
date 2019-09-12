@@ -38,7 +38,16 @@ public class Main {
             }
         }
         else if(x==1){
-            
+            AStar a = new AStar();
+            State s = new State(initialState,0);
+            a.compute(s, null);
+            while(!a.frontier.isEmpty()){
+                State curr = a.frontier.remove();
+                a.moveUp(curr);
+                a.moveDown(curr);
+                a.moveLeft(curr);
+                a.moveRight(curr);
+            }
         }
         else{
             System.out.println("No Algorithm was found");
