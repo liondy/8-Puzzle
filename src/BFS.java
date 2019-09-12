@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
-public class State{
+public class BFS{
     Queue<String> frontier = new LinkedList<String>();
     Map<String,Integer> explored = new HashMap<String,Integer>();
     Map<String,String> memo = new HashMap<String,String>();

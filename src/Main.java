@@ -23,15 +23,25 @@ public class Main {
             initialState += br.readLine();
         }
         initialState = initialState.replace(" ", "");
+        System.out.println("Input Algorithm: 0 = BFS, 1 = A*");
+        int x = Integer.parseInt(br.readLine());
         System.out.println("Searching for solution...");
-        State s = new State();
-        s.compute(initialState,null);
-        while(!s.frontier.isEmpty()){
-            String curr = s.frontier.remove();
-            s.moveUp(curr);
-            s.moveDown(curr);
-            s.moveLeft(curr);
-            s.moveRight(curr);
+        if(x==0){
+            BFS s = new BFS();
+            s.compute(initialState,null);
+            while(!s.frontier.isEmpty()){
+                String curr = s.frontier.remove();
+                s.moveUp(curr);
+                s.moveDown(curr);
+                s.moveLeft(curr);
+                s.moveRight(curr);
+            }
+        }
+        else if(x==1){
+            
+        }
+        else{
+            System.out.println("No Algorithm was found");
         }
     }
 }
