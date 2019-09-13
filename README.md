@@ -2,11 +2,14 @@
 
 Untuk menjalankan program ini, bisa dijalankan dengan netbeans project. Program ini hanya berisi simulasi permasalahan 8-puzzle dengan algoritma BFS dan A*
 
+## Run this project
+To compile and run this project, you need JDK 8 and Netbeans 8.2. Download this folder to your local computer and open it with netbeans
+
 ## Deskripsi Program
 Program yang mensimulasikan penyelesaian 8-puzzle
 
 ## Spesifikasi Input:
-Input diawali dengan kalimat "Input your board: ". Baris berikutnya berupa input 9 angka (0-8) acak dalam bentuk array 2D berukuran 3x3. Input diakhiri dengan kalimat "Searching for solution..."
+Input diawali dengan kalimat "Input your board: ". Baris berikutnya berupa input 9 angka (0-8) acak dalam bentuk array 2D berukuran 3x3. Input kemudian dilanjutkan dengan "Pilih algoritma: 0=BFS, 1=A*". Input diakhiri dengan kalimat "Searching for solution..."
 
 ## Spesifikasi Output:
 Output diawali dengan "Solution found after n steps" dengan n merupakan jumlah langkah yang dibutuhkan untuk menyelesaikan puzzle tersebut. Baris berikutnya diawali dengan "Step: x" dengan x merupakan langkah ke-x (0<=x<=n). Saat x bernilai 0, akan di print juga (Initial State), dan saat x bernilai n, akan di print juga (Goal State). Untuk setiap step, akan dikeluarkan kondisi papan saat ini.
@@ -124,3 +127,7 @@ Step: 20 (Goal State) <br>
 1 2 3 <br>
 4 5 6 <br>
 7 8 0 <br>
+
+### Note
+1. Program ini masih dalam tahap pengembangan, beberapa test case aneh mungkin tidak akan ditemukan solusinya.
+2. Credit to `friskac`
