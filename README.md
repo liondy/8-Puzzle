@@ -129,5 +129,4 @@ Step: 20 (Goal State) <br>
 7 8 0 <br>
 
 ### Note
-1. Program ini masih dalam tahap pengembangan, beberapa test case aneh mungkin tidak akan ditemukan solusinya.
-2. Credit to @friskac
+Program ini masih dalam tahap pengembangan, beberapa test case aneh mungkin tidak akan ditemukan solusinya.
